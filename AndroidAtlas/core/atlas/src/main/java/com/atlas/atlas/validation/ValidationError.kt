@@ -1,5 +1,6 @@
 package com.atlas.atlas.validation
 
-interface ValidationError {
-    val message: String
-}
+data class ValidationError (
+    val type: ValidationType,
+    val message: String?
+)
