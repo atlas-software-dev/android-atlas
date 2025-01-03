@@ -1,4 +1,4 @@
-package com.atlas.atlas.validation.anotation
+package com.atlas.atlas.validation.annotation
 
 @Retention
 @Target(AnnotationTarget.FIELD)

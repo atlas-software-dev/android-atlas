@@ -1,16 +1,17 @@
 package com.atlas.atlas
 
 import com.atlas.atlas.validation.Validator
+import com.atlas.atlas.validation.annotation.Length
 import com.atlas.atlas.validation.annotation.NotNullOrEmpty
 import org.junit.Assert
 import org.junit.Test
 
-class IsNullOrEmptyValidationTypeUnitTest {
+class LengthValidationTypeUnitTest {
     @Test
     fun sucessAnnotationTest() {
         val obj = object {
-            @NotNullOrEmpty
-            val name: String = "Paulo"
+            @Length(6,8)
+            val name: String = "12345678"
         }
         val result = Validator.validate(obj)
         Assert.assertEquals(true, result.isValid())
@@ -19,51 +20,51 @@ class IsNullOrEmptyValidationTypeUnitTest {
     @Test
     fun successTest() {
         val obj = object {
-            val name: String = "Paulo"
+            val name: String = "12345678"
         }
         val result = Validator.Builder()
-                                .stringEmptyOrNull(obj::name.name)
+                                .length(obj::name.name,6,8)
                                 .build()
                                 .validate(obj)
         Assert.assertEquals(true, result.isValid())
     }
     @Test
-    fun errorEmptyAnnotationTest() {
+    fun errorUnderMinAnnotationTest() {
         val obj = object {
-            @NotNullOrEmpty
-            val name: String = ""
+            @Length(6,8)
+            val name: String = "123"
         }
         val result = Validator.validate(obj)
         Assert.assertEquals(false, result.isValid())
     }
 
     @Test
-    fun errorEmptyTest() {
+    fun errorUpperMaxTest() {
         val obj = object {
-            val name: String = ""
+            val name: String = "123456789"
         }
         val result = Validator.Builder()
-            .stringEmptyOrNull(obj::name.name)
+            .length(obj::name.name,6,8)
             .build()
             .validate(obj)
         Assert.assertEquals(false, result.isValid())
     }
 
     @Test
-    fun errorBlankTest() {
+    fun errorNullTest() {
         val obj = object {
-            @NotNullOrEmpty
-            val name: String = "        "
+            @Length
+            val name: String? = null
         }
         val result = Validator.validate(obj)
-        Assert.assertEquals(false, result.isValid())
+        Assert.assertEquals(true, result.isValid())
     }
 
     @Test
     fun errorInvalidType() {
         Assert.assertThrows(IllegalArgumentException::class.java) {
             val obj = object {
-                @NotNullOrEmpty
+                @Length
                 val name: Int = 0
             }
             val result = Validator.validate(obj)
