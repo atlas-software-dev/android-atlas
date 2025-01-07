@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "AndroidAtlas"
 include(":app")
-include(":core:atlas")
+include(":core:android-atlas")
